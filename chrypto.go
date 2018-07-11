@@ -15,9 +15,11 @@ import (
 )
 
 var (
-	db *sql.DB
+	db *sql.DB // functions will access this global variable to read and write to database
 )
 
+// Quote describes a specific moment in time for a cryptocurrency asset.
+// All prices are quoted in USD. E.g Bitcoin's open, close, high, and low values would all be BTC -> USD.
 type Quote struct {
 	Time       int64   `json:"time"` // is a unix timestamp
 	Close      float64 `json:"close"`
@@ -28,6 +30,7 @@ type Quote struct {
 	VolumeTo   float64 `json:"volumeto"`
 }
 
+// response we get from querying the API. Used to easily read the data.
 type CryptoCompareResponse struct {
 	Response          string  `json:"Response"`
 	Type              int     `json:"Type"`
@@ -187,7 +190,7 @@ func getHistoricalFor(symbol string, unixtime int64, donec chan string, errc cha
 	// set date for limit
 	untilDate := earliest.Time - 1
 	// inform progress
-	log.Printf("Fetched 2000 from %v", symbol)
+	//log.Printf("Fetched 2000 from %v", symbol)
 	// wait a few milliseconds so that the API doesn't complain
 	time.Sleep(500 * time.Millisecond)
 	// recursively get historical again
@@ -214,6 +217,7 @@ func main() {
 	donec, errc := make(chan string), make(chan error)
 	// go get each symbol's data concurrently
 	for _, symbol := range symbols {
+		log.Printf("Fetching historical data for: %v", symbol)
 		go getHistoricalFor(symbol, time.Now().Unix(), donec, errc)
 	}
 	// this will block while it waits for channels to become available and send data
