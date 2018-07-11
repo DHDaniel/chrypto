@@ -2,9 +2,9 @@
 
 Chrypto is a command-line utility tool written in Go that allows you to quickly obtain all the available historical data for a wide range of cryptocurrencies.
 
-It obtains the asset movement information (open, high, low, close, and volumes) along with the date for hourly intervals since the conception of the cryptocurrency. For example, the utility could retrieve all the hourly historical price movements for Bitcoin since its conception.
+It obtains the asset movement information (open, high, low, close, and volumes) along with the date in hourly intervals since the conception of the cryptocurrency. For example, chrypto could retrieve all the hourly historical price movements for Bitcoin since its conception.
 
-The information is stored in an SQLite database, with a separate table created for each symbol. Each table contains all the hourly entries, with fields named **time, close, high, low, open, volume_from, and volume_to**. All of these fields correspond to the fields described in the [CryptoCompare API](https://min-api.cryptocompare.com/).
+The information is stored in an SQLite database, with a separate table created for each symbol. Each table contains all the hourly entries, with fields named **time, close, high, low, open, volume_from, and volume_to**. All of these fields correspond to the fields described in the [CryptoCompare API](https://min-api.cryptocompare.com/) - for further information, refer to their website.
 
 All prices are quoted in US dollars.
 
@@ -27,7 +27,9 @@ $ chrypto BTC ETH
 ```
 
 ### Flags
-The only flag that is available is the `dbpath` flag. It should be a path to the file that the script should store its data in. It defaults to `./historical.db`.
+The only flag that is available is the `dbpath` flag. It should be a path to the file where the script should store its data in. It defaults to `./historical.db`, creating a new SQLite file where the binary is run.
+
+This example provides a custom location. Both relative and absolute paths are accepted.
 ```bash
 $ chrypto -dbpath="./path/to/my/database.db" BTC ETH
 ```
